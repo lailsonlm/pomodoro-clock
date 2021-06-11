@@ -10,9 +10,9 @@ A Técnica Pomodoro é um método de gerenciamento de tempo desenvolvido por Fra
 
 ## Bonus features
 
--   [ ] User can hear a sound playing when the timer hits `00:00` - denoting that the session has ended
--   [ ] User can change / customize the minutes in both sessions before starting
--   [ ] User can set a **long break** session of 10 minutes. This will be activated every 4th **break** session
+-   [ ] O usuário pode ouvir um som tocando quando o cronômetro atinge `00:00` - denotando que a sessão terminou
+-   [ ] Usuário pode alterar os minutos em ambas as sessões antes de começar
+-   [ ] O usuário pode definir uma sessão de **intervalo longo** de 10 minutes. Isso será ativado a cada 4ª sessão de **intervalo**
 
 ## Useful links and resources
 

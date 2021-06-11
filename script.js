@@ -1,62 +1,82 @@
 let interval
-let timer = 25
+let timer
+let duration
 
-function runTimer(duration, display) {
+let workingSession = 25
+let breakSession = 5
+let isOn = true
+
+
+const btnStart = document.querySelector('.btn-start')
+const btnStop = document.querySelector('.btn-stop')
+const circleRotate = document.querySelector('.circle2');
+const display = document.querySelector('.timer')
+
+let rotate = 315
+
+function runTimer() {
     timer = duration
-    let minutes, seconds
-
+    
+    // Rodando Temporizador
     interval = setInterval(() => {
-        minutes = parseInt(timer / 60, 10)
-        seconds = parseInt(timer % 60, 10)
-
-        minutes = minutes < 10 ? "0" + minutes : minutes
-        seconds = seconds < 10 ? "0" + seconds : seconds
-
-        display.innerHTML = `${minutes}:${seconds}`
+        rotate
+        displayTime()
+        rotateTimer()
         timer -= 1
 
         if (timer < 0) {
-            clearInterval(interval)
-
-            if (duration != 300) {
-                duration = 300
-                timer = duration / 60
-                minutes = parseInt(duration / 60, 10)
-                seconds = parseInt(duration % 60, 10)
-
-                minutes = minutes < 10 ? "0" + minutes : minutes
-                seconds = seconds < 10 ? "0" + seconds : seconds
-
-                display.innerHTML = `${minutes}:${seconds}`
-            }
+            stopTimer()
         }
-    }, 1000);
-
-    const btnStop = document.querySelector('.btn-stop')
-
-    btnStop.addEventListener('click', stopTimer)
-    function stopTimer() {
-        clearInterval(interval)
-        timer = duration / 60
-
-        minutes = parseInt(duration / 60, 10)
-        seconds = parseInt(duration % 60, 10)
-
-        minutes = minutes < 10 ? "0" + minutes : minutes
-        seconds = seconds < 10 ? "0" + seconds : seconds
-
-        display.innerHTML = `${minutes}:${seconds}`
-    }
+    }, 1000);    
 }
 
-const btnStart = document.querySelector('.btn-start')
+// Exibição do tempo na tela
+function displayTime() {
+    let minutes, seconds
+    minutes = parseInt(timer / 60, 10)
+    seconds = parseInt(timer % 60, 10)
+
+    minutes = minutes < 10 ? "0" + minutes : minutes
+    seconds = seconds < 10 ? "0" + seconds : seconds
+
+    display.innerHTML = `${minutes}:${seconds}`
+}
+
+
+// Parar o Temporizador
+btnStop.addEventListener('click', stopTimer)
+function stopTimer() {
+    clearInterval(interval)
+    timer = duration
+    displayTime()
+
+    circleRotate.style.transform = "rotate(-45deg)"
+    circleRotate.style.transition = "0s linear"
+}
+
+function rotateTimer() {
+    circleRotate.style.transform = "rotate("+rotate+"deg)"
+    circleRotate.style.transition = duration+"s linear"
+    }
+
+// Alternar sessões
+function toggleTimer() {
+    if(isOn) {
+        timer = workingSession
+        isOn = false
+    } else if(isOn === false) {
+        timer = breakSession
+        isOn = true
+    }
+
+    duration = 60 * timer
+}
+
 btnStart.addEventListener('click', startTimer)
 
 function startTimer() {
-    const duration = 60 * timer
-
-    const display = document.querySelector('.timer')
-    runTimer(duration, display)
+    toggleTimer()
+    runTimer()
 }
 
 
