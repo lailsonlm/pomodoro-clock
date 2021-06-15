@@ -125,49 +125,114 @@ main {
 .button {
     display: flex;
     width: 60%;
-    justify-content: space-between;
+    gap: 1.5rem;
+    justify-content: center;
     align-items: center;
     margin: 1.0rem 0 4.0rem;
 }
 
 .btn-start {
-    padding: 1.0rem 5.0rem;
-    margin-right: 2.0rem;
+    padding: 0.5rem;
 
-    background-color: #F2F2F2;
-    color: var(--red-bg);
+    background-color: transparent;
+    color: #F2F2F2;
 
-    border-radius: 0.5rem;
+    border: none;
 
-    font-size: 2.0rem;
+    font-size: 1.5rem;
     font-weight: 600;
 
     cursor: pointer;
-    transition: 0.5s;
+
+    overflow: hidden;
+    position: relative;
 }
 
-.btn-start:hover {
-    /*border: 1px solid #12A63C;*/
-    background-color: #5DBF28;
-    color: #fff;
+.btn-start::before,
+.btn-pause::before,
+.btn-stop::before,
+.btn-reset::before{
+    content: '';
+    position: absolute;
+
+    bottom: 0px;
+    left: 0px;
+
+    width: 0;
+    height: 0;
+
+    border-bottom: 3px solid transparent;
+}
+
+.btn-start:hover::before,
+.btn-pause:hover::before,
+.btn-stop:enabled:hover::before,
+.btn-reset:enabled:hover::before{
+    animation: animate-menu 0.3s ease-in-out forwards;
+    font-weight: 700;
+}
+
+.btn-pause {
+    overflow: hidden;
+    position: relative;
 }
 
 .btn-stop {
-    padding: 1.0rem 5.0rem;
+    padding: 0.5rem;
 
-    background-color: #F2F2F2;
-    color: var(--red-bg);
+    background-color: transparent;
+    color: #F2F2F2;
 
-    border-radius: 0.5rem;
+    border: none;
 
-    font-size: 2.0rem;
+    font-size: 1.5rem;
     font-weight: 600;
 
     cursor: pointer;
     transition: 0.5s;
+
+    overflow: hidden;
+    position: relative;
 }
 
-.btn-stop:hover {
-    background-color: var(--red-dark);
-    color: #fff;
+.btn-stop:disabled {
+    opacity: 0.2;
+    cursor:no-drop;
+}
+
+.btn-reset {
+    padding: 0.5rem;
+
+    background-color: transparent;
+    color: #F2F2F2;
+
+    border: none;
+
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.5s;
+
+    overflow: hidden;
+    position: relative;
+}
+
+.btn-reset:disabled {
+    opacity: 0.2;
+    cursor:no-drop;
+}
+
+@keyframes animate-menu {
+    0% {
+        width: 0;
+        height: 0;
+        border-bottom: 3px solid var(--red-dark);
+    }
+
+    100% {
+        width: 100%;
+        height: 0;
+        border-bottom: 3px solid var(--red-dark);
+    }
 }
