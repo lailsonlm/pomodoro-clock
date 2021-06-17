@@ -4,34 +4,38 @@ let duration
 let start
 let remaining
 
-let workingSession = 0.5
-let breakSession = 0.2
+let workingSession = 0.2
+let breakSession = 0.1
 let isOn = false
+let rotate
 
 
+const audio = new Audio('alarm.wav');
 const btnStart = document.querySelector('.btn-start')
 const btnStop = document.querySelector('.btn-stop')
 const btnReset = document.querySelector('.btn-reset')
 const btnPause = document.querySelector('.btn-pause')
 const circleRotate = document.querySelector('.circle2');
 const display = document.querySelector('.timer')
-
-let rotate = 315
+const session = document.querySelector('.session')
 
 function runTimer() {
     timer = remaining
     duration = remaining
+
+    start = Date.now();
     
     // Rodando Temporizador
     interval = setInterval(() => {
-        rotate
         displayTime()
         rotateTimer()
         timer -= 1
-
+        rotate  = 315 
+        
         if (timer < 0) {
             toggleTimer()
             stopTimer()
+            audio.play();
         }
     }, 1000);  
 }
@@ -51,16 +55,18 @@ function displayTime() {
 // Rodar circulo com cronômetro
 function rotateTimer() {
     circleRotate.style.transform = "rotate("+rotate+"deg)"
-    circleRotate.style.transition = duration+"s linear"
+    circleRotate.style.transition = remaining+"s linear"
 }
 
 // Alternar sessões
 function toggleTimer() {
     if(isOn) {
         timer = workingSession
+        session.innerHTML = 'Sessão de Trabalho'
         isOn = false
     } else if(isOn === false) {
         timer = breakSession
+        session.innerHTML = 'Sessão de Intervalo'
         isOn = true
     }
 
@@ -89,7 +95,7 @@ function stopTimer() {
 // Resetar o Temporizador
 btnReset.addEventListener('click', resetTimer)
     function resetTimer() {
-        timer = remaining
+        timer = duration
 
         circleRotate.style.transform = "rotate(-45deg)"
         circleRotate.style.transition = "0s linear"
@@ -116,6 +122,8 @@ function pauseTimer() {
         clearInterval(interval)
         let pause = Date.now();
         remaining = remaining - ((pause - start)/1000)
+        circleRotate.style.transform = "rotate(-45deg)"
+        circleRotate.style.transition = "0s linear"
 }
 
 // Iniciar Temporizador
@@ -123,7 +131,6 @@ remaining = 60 * workingSession
 function startTimer() {
     btnStop.removeAttribute('disabled')
     btnReset.removeAttribute('disabled') 
-    start = Date.now();
     runTimer()
 }
 
