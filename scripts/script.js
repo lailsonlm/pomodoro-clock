@@ -95,15 +95,51 @@ function toggleTimer() {
         timer = breakSession
         session.innerHTML = 'Sessão de Intervalo'
         isOn = false
+
+        changeTheme(breakTheme)
+
     } else if(isOn === false) {
         timer = workingSession
         session.innerHTML = 'Sessão de Trabalho'
         isOn = true
+
+        changeTheme(workingTheme)
     }
 
     duration = 60 * timer
     remaining = duration
 }
+
+// Alterar cores
+const root = document.querySelector(':root')
+
+const getStyle = (element, style) => window.getComputedStyle(element).getPropertyValue(style)
+
+const workingTheme = {
+    bg: getStyle(root, "--bg"),
+    menuUnderline: getStyle(root, "--menu-underline"),
+    bgContainer: getStyle(root, "--bg-container"),
+    text: getStyle(root, "--text"),
+    modalBtn: getStyle(root, "--modal-btn"),
+}
+
+const breakTheme = {
+    bg: "#45B69C",
+    menuUnderline: "#31816F",
+    bgContainer: "#5DC2AA",
+    modalBtn: "#7293A0"
+}
+
+const transformKey = key => "--" + key.replace(/([A-Z])/, "-$1").toLowerCase()
+
+const btnSett = document.querySelector('.config')
+
+const changeTheme = (colors) => {
+    Object.keys(colors).map(key => {
+        root.style.setProperty(transformKey(key), colors[key])
+    })
+}
+
 
 // Parar o Temporizador
 btnStop.addEventListener('click', stopTimer)
