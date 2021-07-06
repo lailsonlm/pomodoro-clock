@@ -15,12 +15,13 @@
 <body>
     <header>
         <h1>Pomodoro Clock</h1>
+        <img src="assets/cog-solid.svg" alt="Configurações" class="config">
     </header>
     <main>
         <div class="container">
             <div class="session">Sessão de Trabalho</div>
             <div class="circle">
-                <div class="timer">25:00</div>
+                <div class="timer"></div>
                 <div class="circle2"></div>
             </div>
             <div class="button">
@@ -32,6 +33,28 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <div class="modal-wrapper">
+        <div class="modal">
+            <div class="close">X</div>
+            <h1>Configurações</h1>
+            <p>*Informar em minutos</p>
+            <div class="working">
+                <label for="working-time">Definir Sessão de Trabalho:</label> 
+                <input type="number" name="working-time" id="working-time" value="25" min="1">
+            </div>
+            
+            <div class="break">
+                <label for="break-time">Definir Sessão de Intervalo:</label> 
+                <input type="number" name="break-time" id="break-time" value="5" min="1">
+            </div>
+
+            <div class="btn-save">
+                Salvar
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts/script.js"></script>
+    <script src="scripts/modal.js"></script>
 </body>
 </html>

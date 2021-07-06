@@ -4,24 +4,53 @@ let duration
 let start
 let remaining
 
-let workingSession = 0.2
-let breakSession = 0.1
-let isOn = false
-let rotate
+const inputWorking = document.querySelector('#working-time');
+const inputBreak = document.querySelector('#break-time');
+
+let workingSession = inputWorking.value;
+let breakSession = inputBreak.value;
 
 
-const audio = new Audio('alarm.wav');
+
+inputWorking.addEventListener('change', updateValue);
+inputBreak.addEventListener('change', updateValue);
+
+let isOn = true
+let rotate = 315
+
+const audio = new Audio('assets/alarm.wav');
 const btnStart = document.querySelector('.btn-start')
 const btnStop = document.querySelector('.btn-stop')
 const btnReset = document.querySelector('.btn-reset')
-const btnPause = document.querySelector('.btn-pause')
 const circleRotate = document.querySelector('.circle2');
 const display = document.querySelector('.timer')
 const session = document.querySelector('.session')
 
+let displayMinutes = workingSession < 10 ? "0" + workingSession : workingSession
+display.innerHTML = `${displayMinutes}:00`
+
+function updateValue() {
+    workingSession = inputWorking.value;
+    breakSession = inputBreak.value;
+
+    stopTimer()
+
+    if(!isOn) {
+        displayMinutes = breakSession < 10 ? "0" + breakSession : breakSession
+        display.innerHTML = `${displayMinutes}:00`
+    } else if(isOn) {
+        displayMinutes = workingSession < 10 ? "0" + workingSession : workingSession
+        display.innerHTML = `${displayMinutes}:00`
+    }
+
+    remaining = isOn ? 60 * workingSession : 60 * breakSession
+    duration = 60 * workingSession
+     
+}
+
+
 function runTimer() {
     timer = remaining
-    duration = remaining
 
     start = Date.now();
     
@@ -30,7 +59,7 @@ function runTimer() {
         displayTime()
         rotateTimer()
         timer -= 1
-        rotate  = 315 
+        rotate
         
         if (timer < 0) {
             toggleTimer()
@@ -52,6 +81,8 @@ function displayTime() {
     display.innerHTML = `${minutes}:${seconds}`
 }
 
+
+
 // Rodar circulo com cronômetro
 function rotateTimer() {
     circleRotate.style.transform = "rotate("+rotate+"deg)"
@@ -61,12 +92,12 @@ function rotateTimer() {
 // Alternar sessões
 function toggleTimer() {
     if(isOn) {
-        timer = workingSession
-        session.innerHTML = 'Sessão de Trabalho'
-        isOn = false
-    } else if(isOn === false) {
         timer = breakSession
         session.innerHTML = 'Sessão de Intervalo'
+        isOn = false
+    } else if(isOn === false) {
+        timer = workingSession
+        session.innerHTML = 'Sessão de Trabalho'
         isOn = true
     }
 
@@ -77,12 +108,13 @@ function toggleTimer() {
 // Parar o Temporizador
 btnStop.addEventListener('click', stopTimer)
 function stopTimer() {
+    timer = duration
     clearInterval(interval)
 
     btnStart.classList.remove('btn-pause')
     btnStart.textContent = 'INICIAR'
 
-    timer = remaining
+    remaining = isOn ? 60 * workingSession : 60 * breakSession;
     displayTime()
 
     circleRotate.style.transform = "rotate(-45deg)"
@@ -101,8 +133,12 @@ btnReset.addEventListener('click', resetTimer)
         circleRotate.style.transition = "0s linear"
     }
 
+// Iniciar Temporizador
+remaining = isOn ? 60 * workingSession : 60 * breakSession
+duration = 60 * workingSession
 // Alternar Start/Pause
 btnStart.addEventListener('click', toggleStart)
+
 function toggleStart() {
     btnStart.classList.toggle('btn-pause')
     if(btnStart.classList.contains('btn-pause') === false) {
@@ -116,22 +152,22 @@ function toggleStart() {
     } else {
         btnStart.textContent = 'INICIAR'
     }
-}
-// Pausar Temporizador
-function pauseTimer() {
+
+
+    // Pausar Temporizador
+    function pauseTimer() {
         clearInterval(interval)
         let pause = Date.now();
         remaining = remaining - ((pause - start)/1000)
         circleRotate.style.transform = "rotate(-45deg)"
         circleRotate.style.transition = "0s linear"
-}
+    }
 
-// Iniciar Temporizador
-remaining = 60 * workingSession
-function startTimer() {
-    btnStop.removeAttribute('disabled')
-    btnReset.removeAttribute('disabled') 
-    runTimer()
-}
 
+    function startTimer() {
+        btnStop.removeAttribute('disabled')
+        btnReset.removeAttribute('disabled') 
+        runTimer()
+    }
+}
 
